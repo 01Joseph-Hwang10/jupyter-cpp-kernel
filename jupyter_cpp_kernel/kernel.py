@@ -218,7 +218,9 @@ class CPPKernel(Kernel):
         codelines = code.splitlines()
         for i, codeline in enumerate(codelines):
             if codeline.startswith('#include "'):
-                _, include_path = codeline.replace('"', '').split(' ', 1)
+                codeline, _ = codeline.split('//', 1)
+                _, include_path = codeline.strip().replace('"',
+                                                           '').split(' ', 1)
                 include_path = os.path.abspath(
                     os.path.join(
                         os.path.dirname(workspace_path),
