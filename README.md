@@ -1,63 +1,65 @@
-# Minimal C kernel for Jupyter
+# Jupyter CPP Kernel
 
-## Use with Docker (recommended)
+This project was forked from <https://github.com/brendan-rius/jupyter-c-kernel> to let it work with C++. **Original README is appended below.**
 
- * `docker pull brendanrius/jupyter-c-kernel`
- * `docker run -p 8888:8888 brendanrius/jupyter-c-kernel`
- * Copy the given URL containing the token, and browse to it. For instance:
- 
- ```
- Copy/paste this URL into your browser when you connect for the first time,
- to login with a token:
-    http://localhost:8888/?token=66750c80bd0788f6ba15760aadz53beb9a9fb4cf8ac15ce8
- ```
+The main purpose of this project is to let myself allow to notetake CSE lectures with relevant code that can be executed in the notebook. So it might not be suitable for the people who demands a full-featured C++ kernel for production.
 
-## Manual installation
+It includes a few improvements:
 
-Works only on Linux and OS X. Windows is not supported yet. If you want to use this project on Windows, please use Docker.
+**You can include another cpp file in your workspace with the `#include` directive.** 
 
+Example code is provided in the `examples` folder. Keep in mind that cpp file and header file should be in a same level of directory. In other words, it's not allowed to have a header file in include directory and cpp file in src directory. Instead, you should have both in the same directory.
 
- * Make sure you have the following requirements installed:
-  * gcc
-  * jupyter
-  * python 3
-  * pip
+**Minor refactoring**
 
-### Step-by-step:
- * `pip install jupyter-c-kernel`
- * `install_c_kernel`
- * `jupyter-notebook`. Enjoy!
+There were some minor refactoring in both cpp and python code.
 
-## Example of notebook
+## Pre-requisites
 
-![Example of notebook](example-notebook.png?raw=true "Example of notebook")
+1. gcc
+2. Jupyter Notebook
+
+## Installation
+
+```bash
+git clone https://github.com/01Joseph-Hwang10/jupyter-cpp-kernel
+cd jupyter-cpp-kernel
+pip install -r requirements.txt # Recommend to use virtualenv
+cd jupyter_cpp_kernel
+sudo python install_cpp_kernel
+```
+
+Make sure to reload the jupyter notebook after installation if there are existing running notebooks.
+
+## Note
+
+- This kernel was tested on:
+  - M1 Macbook Air
+  - OS: macOS Ventura 13.1
+  - RAM: 16GB
+  - gcc is provided by Xcode
+- I did not tested the Dockerfile, so it might not work.
+
+## Limitations
+
+It cannot:
+- recieve input from prompt like python `input` function. It will simply return an empty string.
 
 ## Custom compilation flags
 
-You can use custom compilation flags like so:
+Everything is same as original README (see `## Custom complication flags` section below), except `cflags` is replaced with `cxxflags`.
 
-![Custom compulation flag](custom_flags.png?raw=true "Example of notebook using custom compilation flags")
+```cpp
+//%cxxflags: -Wall -g
 
-Here, the `-lm` flag is passed so you can use the math library.
+#include <iostream>
 
-## Contributing
-
-The docker image installs the kernel in editable mode, meaning that you can
-change the code in real-time in Docker. For that, just run the docker box like
-that:
-
-```bash
-git clone https://github.com/brendan-rius/jupyter-c-kernel.git
-cd jupyter-c-kernel
-docker run -v $(pwd):/jupyter/jupyter_c_kernel/ -p 8888:8888 brendanrius/jupyter-c-kernel
+int main() {
+   std::cout << "Hello world!" << std::endl;
+   return 0;
+}
 ```
 
-This clones the source, run the kernel, and binds the current folder (the one
-you just cloned) to the corresponding folder in Docker.
-Now, if you change the source, it will be reflected in [http://localhost:8888](http://localhost:8888)
-instantly. Do not forget to click "restart" the kernel on the page as it does
-not auto-restart.
+# Origianl README
 
-## License
-
-[MIT](LICENSE.txt)
+Check out the original README for further details: <https://github.com/brendan-rius/jupyter-c-kernel#readme>

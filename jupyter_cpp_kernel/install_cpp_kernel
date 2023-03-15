@@ -8,16 +8,21 @@ import argparse
 from jupyter_client.kernelspec import KernelSpecManager
 from IPython.utils.tempdir import TemporaryDirectory
 
+KERNEL_PATH = os.path.abspath(
+    os.path.join(
+        os.path.dirname(__file__),
+        'main.py',
+    ))
+
 kernel_json = {
     "argv": [
         "python3",
-        "-m",
-        "jupyter_c_kernel",
+        KERNEL_PATH,
         "-f",
-        "{connection_file}"
+        "{connection_file}",
     ],
-    "display_name": "C",
-    "language": "c"
+    "display_name": "C++",
+    "language": "cpp",
 }
 
 
@@ -29,7 +34,13 @@ def install_my_kernel_spec(user=True, prefix=None):
         # TODO: Copy resources once they're specified
 
         print('Installing IPython kernel spec')
-        KernelSpecManager().install_kernel_spec(td, 'c', user=user, replace=True, prefix=prefix)
+        KernelSpecManager().install_kernel_spec(
+            td,
+            'cpp',
+            user=user,
+            replace=True,
+            prefix=prefix,
+        )
 
 
 def _is_root():
@@ -41,25 +52,24 @@ def _is_root():
 
 def main(argv=[]):
     parser = argparse.ArgumentParser(
-        description='Install KernelSpec for C Kernel'
-    )
+        description='Install KernelSpec for C++ Kernel')
     prefix_locations = parser.add_mutually_exclusive_group()
 
     prefix_locations.add_argument(
         '--user',
         help='Install KernelSpec in user homedirectory',
-        action='store_false' if _is_root() else 'store_true'
+        action='store_false' if _is_root() else 'store_true',
     )
     prefix_locations.add_argument(
         '--sys-prefix',
         help='Install KernelSpec in sys.prefix. Useful in conda / virtualenv',
         action='store_true',
-        dest='sys_prefix'
+        dest='sys_prefix',
     )
     prefix_locations.add_argument(
         '--prefix',
         help='Install KernelSpec in this prefix',
-        default=None
+        default=None,
     )
 
     args = parser.parse_args()
