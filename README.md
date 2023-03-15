@@ -10,6 +10,8 @@ It includes a few improvements:
 
 Example code is provided in the `examples` folder. Keep in mind that cpp file and header file should be in a same level of directory. In other words, it's not allowed to have a header file in include directory and cpp file in src directory. Instead, you should have both in the same directory.
 
+Also it is worth note that the absolute path of the file you want to include should only contain alphanumeric characters, and the following special characters: `.`, `-`, `_`, `/`.
+
 **Minor refactoring**
 
 There were some minor refactoring in both cpp and python code.
