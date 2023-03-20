@@ -218,7 +218,8 @@ class CPPKernel(Kernel):
         codelines = code.splitlines()
         for i, codeline in enumerate(codelines):
             if codeline.startswith('#include "'):
-                codeline, _ = codeline.split('//', 1)
+                if '//' in codeline:
+                    codeline, _ = codeline.split('//', 1)
                 _, include_path = codeline.strip().replace('"',
                                                            '').split(' ', 1)
                 include_path = os.path.abspath(
